@@ -182,8 +182,13 @@ def get_regr(func_avg, petco2hrf, tr, freq, outname, lag_max=None,
     plt.savefig(f'{outname}_petco2hrf.png', dpi=SET_DPI)
     plt.close()
 
+    # Export regressor at TR frequency
     petco2hrf_demean = io.export_regressor(petco2hrf_shift, freq, tr, outname,
-                                           'petco2hrf', ext)
+                                           f'petco2hrf_{tr}sec', ext)
+
+    # Export regressor at original frequency
+    petco2hrf_demean = io.export_regressor(petco2hrf_shift, freq, freq, outname,
+                                          f'petco2hrf_{freq}Hz', ext)
 
     # Initialise the shifts first.
     petco2hrf_shifts = None
@@ -279,18 +284,18 @@ def regression(data, mask, regr, mat_conf, r2model='full', debug=False, x1D='mat
             - 'full' (default)
                 Use every regressor in the model, i.e. compare versus baseline 0
             - 'partial'
-                Consider only `regr` in the model, i.e. compare versus baseline 
+                Consider only `regr` in the model, i.e. compare versus baseline
                 composed by all other regressors (`mat_conf`)
             - 'intercept'
-                Use every regressor in the model, but the intercept, i.e. compare 
-                versus baseline intercept (Legendre polynomial order 0, a.k.a. 
+                Use every regressor in the model, but the intercept, i.e. compare
+                versus baseline intercept (Legendre polynomial order 0, a.k.a.
                 average signal)
             - 'adj_*'
                 Adjusted R^2 version of normal counterpart
-        Under normal conditions, while the R^2 value will be different between options, 
+        Under normal conditions, while the R^2 value will be different between options,
         a lagged regression based on any R^2 model will give the same results.
         This WILL NOT be the case if orthogonalisations between `regr` and `mat_conf`
-        are introduced: a lagged regression based on `partial` might hold different 
+        are introduced: a lagged regression based on `partial` might hold different
         results.
         Default: 'full'
 
