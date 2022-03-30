@@ -187,7 +187,7 @@ def get_regr(func_avg, petco2hrf, tr, freq, outname, lag_max=None,
                                            f'petco2hrf_{tr}sec', ext)
 
     # Export regressor at original frequency
-    petco2hrf_demean = io.export_regressor(petco2hrf_shift, freq, freq, outname,
+    petco2hrf_demean_hires = io.export_regressor(petco2hrf_shift, freq, freq, outname,
                                           f'petco2hrf_{freq}Hz', ext)
 
     # Initialise the shifts first.
